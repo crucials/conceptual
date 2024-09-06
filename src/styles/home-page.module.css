@@ -1,0 +1,7 @@
+.ideas-sidebar {
+    overflow-y: auto;
+}
+
+.create-idea-button {
+    flex-shrink: 0;
+}
