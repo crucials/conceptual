@@ -1,9 +1,11 @@
+import { Title } from '@mantine/core'
+
 export default function Home() {
     return (
         <>
-            <button onClick={() => window.alert('gt')} color='blue'>
-                Close
-            </button>
+            <Title order={1}>
+                have an idea?
+            </Title>
         </>
     )
 }
