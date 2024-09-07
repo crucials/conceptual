@@ -3,3 +3,5 @@ export interface Idea {
     title: string
     content: string
 }
+
+export type IdeaWithoutId = Omit<Idea, 'id'>

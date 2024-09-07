@@ -1,7 +1,8 @@
 import { createAsyncThunk } from '@reduxjs/toolkit'
 import { selectPrivateIdeasStatus } from '@/stores/private-ideas'
 import { RootState } from '@/stores'
-import { Idea } from '@/types/idea'
+import { PrivateIdeasDatabase } from '@/private-ideas-database'
+import { Idea, IdeaWithoutId } from '@/types/idea'
 
 export const privateIdeasLoadingThunk = createAsyncThunk<
     Idea[],
@@ -10,15 +11,12 @@ export const privateIdeasLoadingThunk = createAsyncThunk<
 >(
     'privateIdeas/load',
     async () => {
-        await new Promise<void>(resolve => setTimeout(resolve, 1000))
+        const privateIdeasDatabase = new PrivateIdeasDatabase()
+        await privateIdeasDatabase.open()
 
-        return [
-            {
-                id: 1,
-                title: '123',
-                content: '123',
-            },
-        ]
+        await new Promise<void>(resolve => setTimeout(resolve, 200))
+
+        return await privateIdeasDatabase.getIdeas()
     },
     {
         condition(arg, thunkApi) {
@@ -27,3 +25,14 @@ export const privateIdeasLoadingThunk = createAsyncThunk<
         },
     },
 )
+
+export const privateIdeasCreationThunk = createAsyncThunk<
+    Idea,
+    Omit<Idea, 'id'>,
+    { state: RootState }
+>('privateIdeas/create', async (ideaData: IdeaWithoutId) => {
+    const privateIdeasDatabase = new PrivateIdeasDatabase()
+    await privateIdeasDatabase.open()
+
+    return await privateIdeasDatabase.addIdea(ideaData)
+})

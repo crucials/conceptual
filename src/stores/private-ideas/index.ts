@@ -4,13 +4,14 @@ import { RootState } from '@/stores'
 import { privateIdeasLoadingThunk } from '@/stores/private-ideas/thunks'
 
 export interface PrivateIdeasState {
-    status: 'initial' | 'loaded' | 'loading'
-    ideas: Idea[]
+    status: 'initial' | 'loaded' | 'pending' | 'error'
+    errorMessage?: string
+    items: Idea[]
 }
 
 const initialState: PrivateIdeasState = {
     status: 'initial',
-    ideas: [],
+    items: [],
 }
 
 export const privateIdeasSlice = createSlice({
@@ -20,21 +21,28 @@ export const privateIdeasSlice = createSlice({
         addIdeas(state, action: PayloadAction<Idea[]>) {
             return {
                 ...state,
-                ideas: state.ideas.concat(...action.payload),
+                items: state.items.concat(...action.payload),
             }
         },
     },
     extraReducers: builder => {
         builder.addCase(privateIdeasLoadingThunk.pending, state => ({
             ...state,
-            status: 'loading',
+            status: 'pending',
         }))
+
         builder.addCase(privateIdeasLoadingThunk.fulfilled, (state, action) => {
             return {
                 status: 'loaded',
-                ideas: state.ideas.concat(...action.payload),
+                items: state.items.concat(...action.payload),
             }
         })
+
+        builder.addCase(privateIdeasLoadingThunk.rejected, (state, action) => ({
+            ...state,
+            status: 'error',
+            errorMessage: action.error.message,
+        }))
     },
 })
 
@@ -42,6 +50,7 @@ export const { addIdeas } = privateIdeasSlice.actions
 
 export const privateIdeasReducer = privateIdeasSlice.reducer
 
-export const selectPrivateIdeas = (state: RootState) => state.privateIdeas.ideas
+export const selectPrivateIdeas = (state: RootState) => state.privateIdeas
+export const selectPrivateIdeasItems = (state: RootState) => state.privateIdeas.items
 export const selectPrivateIdeasStatus = (state: RootState) =>
     state.privateIdeas.status
