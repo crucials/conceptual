@@ -1,12 +1,12 @@
 import { ReactNode } from 'react'
 import { AppShell, createTheme, MantineProvider } from '@mantine/core'
 import Sidebar from '@/components/sidebar'
-import { useLoadedPrivateIdeas } from '@/hooks/loaded-private-ideas'
+import { useLoadedIdeas } from '@/hooks/loaded-ideas'
 
 const theme = createTheme({})
 
 export default function RootLayout({ children }: { children: ReactNode }) {
-    useLoadedPrivateIdeas()
+    useLoadedIdeas()
 
     return (
         <MantineProvider theme={theme}>

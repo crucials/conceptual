@@ -3,21 +3,21 @@ import { notFound } from 'next/navigation'
 import { useRouter } from 'next/router'
 import { Container, Skeleton, Text, Title, Transition } from '@mantine/core'
 import { useAppDispatch, useAppSelector } from '@/stores/hooks'
-import { privateIdeasReducer, selectPrivateIdeas, updateIdea } from '@/stores/private-ideas'
+import { localIdeasReducer, selectLocalIdeas, updateIdea } from '@/stores/local-ideas'
 import { UnexpectedError } from '@/errors/unexpected-error'
 import type { Idea } from '@/types/idea'
 import { useDebouncedCallback } from '@mantine/hooks'
-import { privateIdeaUpdateThunk } from '@/stores/private-ideas/thunks'
+import { localIdeaUpdateThunk } from '@/stores/local-ideas/thunks'
 
 export default function Idea() {
     const router = useRouter()
 
-    const privateIdeas = useAppSelector(selectPrivateIdeas)
+    const localIdeas = useAppSelector(selectLocalIdeas)
     const dispatch = useAppDispatch()
 
     const handleDatabaseSynchronization = useDebouncedCallback(async () => {
         if (idea) {
-            await dispatch(privateIdeaUpdateThunk({
+            await dispatch(localIdeaUpdateThunk({
                 ideaToUpdateId: idea.id,
                 newIdeaValue: idea,
             }))
@@ -25,17 +25,17 @@ export default function Idea() {
         }
     }, 500)
 
-    const idea = privateIdeas.items.find(idea => `${idea.id}` === router.query.id)
+    const idea = localIdeas.items.find(idea => `${idea.id}` === router.query.id)
 
     useEffect(() => {
-        if (privateIdeas.status === 'loaded') {
+        if (localIdeas.status === 'loaded') {
             if (!idea) {
                 notFound()
             }
-        } else if (privateIdeas.status === 'error') {
-            throw new UnexpectedError(privateIdeas.errorMessage || undefined)
+        } else if (localIdeas.status === 'error') {
+            throw new UnexpectedError(localIdeas.errorMessage || undefined)
         }
-    }, [privateIdeas.status])
+    }, [localIdeas.status])
 
     function handleIdeaUpdate(newIdeaData: Partial<Idea>) {
         if (idea) {
@@ -51,7 +51,7 @@ export default function Idea() {
     return (
         <Container fluid p="xl">
             <Transition
-                mounted={privateIdeas.status === 'loaded' && idea !== undefined}
+                mounted={localIdeas.status === 'loaded' && idea !== undefined}
                 transition="fade"
             >
                 {styles => (
@@ -70,7 +70,7 @@ export default function Idea() {
                 )}
             </Transition>
 
-            {privateIdeas.status === 'pending' && (
+            {localIdeas.status === 'pending' && (
                 <div>
                     <Skeleton height={35} mb="lg" />
 

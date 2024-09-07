@@ -1,9 +1,9 @@
 import { Action, configureStore, ThunkAction } from '@reduxjs/toolkit'
-import { privateIdeasReducer } from '@/stores/private-ideas'
+import { localIdeasReducer } from '@/stores/local-ideas'
 
 export const store = configureStore({
     reducer: {
-        privateIdeas: privateIdeasReducer,
+        localIdeas: localIdeasReducer,
     },
 })
 

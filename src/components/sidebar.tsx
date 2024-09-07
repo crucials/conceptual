@@ -11,11 +11,11 @@ import {
 } from '@mantine/core'
 import { IconExclamationCircle } from '@tabler/icons-react'
 import { useAppSelector } from '@/stores/hooks'
-import { selectPrivateIdeas, selectPrivateIdeasItems } from '@/stores/private-ideas'
+import { selectLocalIdeas, selectLocalIdeasItems } from '@/stores/local-ideas'
 import IdeasList from '@/components/sidebar/ideas-list'
 
 export default function Sidebar() {
-    const ideas = useAppSelector(selectPrivateIdeas)
+    const ideas = useAppSelector(selectLocalIdeas)
 
     return (
         <AppShell.Navbar p="lg">

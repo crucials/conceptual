@@ -3,15 +3,15 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { Button, CSSProperties, Divider, NavLink, ScrollArea } from '@mantine/core'
 import { Icon3dCubeSphere } from '@tabler/icons-react'
-import { PrivateIdeasState } from '@/stores/private-ideas'
+import { LocalIdeasState } from '@/stores/local-ideas'
 import { useAppDispatch } from '@/stores/hooks'
-import { privateIdeasCreationThunk } from '@/stores/private-ideas/thunks'
+import { localIdeasCreationThunk } from '@/stores/local-ideas/thunks'
 
 export default function IdeasList({
     ideasState,
     style,
 }: {
-    ideasState: PrivateIdeasState
+    ideasState: LocalIdeasState
     style?: CSSProperties
 }) {
     const router = useRouter()
@@ -23,7 +23,7 @@ export default function IdeasList({
         setLoading(true)
 
         dispatch(
-            privateIdeasCreationThunk({
+            localIdeasCreationThunk({
                 title: 'enter something here',
                 content: 'and here',
             }),

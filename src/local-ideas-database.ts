@@ -3,7 +3,7 @@ import { Idea, IdeaWithoutId } from '@/types/idea'
 export class DatabaseOpeningFailedError extends Error {}
 export class DatabaseNotInitializedError extends Error {}
 
-export class PrivateIdeasDatabase {
+export class LocalIdeasDatabase {
     private readonly IDEAS_OBJECT_STORE_NAME = 'ideas'
 
     private database: IDBDatabase | undefined = undefined

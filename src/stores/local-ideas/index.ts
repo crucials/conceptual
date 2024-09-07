@@ -2,25 +2,25 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { Idea } from '@/types/idea'
 import { RootState } from '@/stores'
 import {
-    privateIdeasCreationThunk,
-    privateIdeasLoadingThunk,
-    privateIdeaUpdateThunk,
-} from '@/stores/private-ideas/thunks'
+    localIdeasCreationThunk,
+    localIdeasLoadingThunk,
+    localIdeaUpdateThunk,
+} from '@/stores/local-ideas/thunks'
 
-export interface PrivateIdeasState {
+export interface LocalIdeasState {
     status: 'initial' | 'loaded' | 'pending' | 'error'
     errorMessage: string | null
     items: Idea[]
 }
 
-const initialState: PrivateIdeasState = {
+const initialState: LocalIdeasState = {
     status: 'initial',
     errorMessage: null,
     items: [],
 }
 
-export const privateIdeasSlice = createSlice({
-    name: 'privateIdeas',
+export const localIdeasSlice = createSlice({
+    name: 'localIdeas',
     initialState,
     reducers: {
         addIdeas(state, action: PayloadAction<Idea[]>) {
@@ -48,12 +48,12 @@ export const privateIdeasSlice = createSlice({
         }
     },
     extraReducers: builder => {
-        builder.addCase(privateIdeasLoadingThunk.pending, state => ({
+        builder.addCase(localIdeasLoadingThunk.pending, state => ({
             ...state,
             status: 'pending',
         }))
 
-        builder.addCase(privateIdeasLoadingThunk.fulfilled, (state, action) => {
+        builder.addCase(localIdeasLoadingThunk.fulfilled, (state, action) => {
             return {
                 status: 'loaded',
                 errorMessage: null,
@@ -61,20 +61,20 @@ export const privateIdeasSlice = createSlice({
             }
         })
 
-        builder.addCase(privateIdeasLoadingThunk.rejected, (state, action) => ({
+        builder.addCase(localIdeasLoadingThunk.rejected, (state, action) => ({
             ...state,
             status: 'error',
             errorMessage: action.error.message || null,
         }))
 
-        builder.addCase(privateIdeasCreationThunk.fulfilled, (state, action) => ({
+        builder.addCase(localIdeasCreationThunk.fulfilled, (state, action) => ({
             ...state,
             items: state.items.concat(action.payload),
             status: 'loaded',
             errorMessage: null,
         }))
 
-        builder.addCase(privateIdeaUpdateThunk.rejected, (state, action) => ({
+        builder.addCase(localIdeaUpdateThunk.rejected, (state, action) => ({
             ...state,
             status: 'error',
             errorMessage: action.error.message || null,
@@ -82,11 +82,11 @@ export const privateIdeasSlice = createSlice({
     },
 })
 
-export const { addIdeas, updateIdea } = privateIdeasSlice.actions
+export const { addIdeas, updateIdea } = localIdeasSlice.actions
 
-export const privateIdeasReducer = privateIdeasSlice.reducer
+export const localIdeasReducer = localIdeasSlice.reducer
 
-export const selectPrivateIdeas = (state: RootState) => state.privateIdeas
-export const selectPrivateIdeasItems = (state: RootState) => state.privateIdeas.items
-export const selectPrivateIdeasStatus = (state: RootState) =>
-    state.privateIdeas.status
+export const selectLocalIdeas = (state: RootState) => state.localIdeas
+export const selectLocalIdeasItems = (state: RootState) => state.localIdeas.items
+export const selectIdeasLoadingStatus = (state: RootState) =>
+    state.localIdeas.status
