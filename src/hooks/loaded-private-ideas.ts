@@ -4,7 +4,8 @@ import { selectPrivateIdeas, selectPrivateIdeasStatus } from '@/stores/private-i
 import { privateIdeasLoadingThunk } from '@/stores/private-ideas/thunks'
 
 /**
- * loads ideas from indexed DB into the store
+ * loads ideas from indexed DB into the store, if they are not already
+ * loaded
  * @returns private ideas state (items, loading status, etc.)
  */
 export function useLoadedPrivateIdeas() {

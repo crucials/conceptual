@@ -1,9 +1,6 @@
 import { Container, Text, Title } from '@mantine/core'
-import { useLoadedPrivateIdeas } from '@/hooks/loaded-private-ideas'
 
 export default function HomePage() {
-    useLoadedPrivateIdeas()
-
     return (
         <Container fluid p="xl">
             <Title order={1} mb="md">
