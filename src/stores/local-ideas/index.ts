@@ -4,7 +4,7 @@ import { RootState } from '@/stores'
 import {
     localIdeasCreationThunk,
     localIdeasLoadingThunk,
-    localIdeaUpdateThunk,
+    localIdeaSynchronizationThunk,
 } from '@/stores/local-ideas/thunks'
 
 export interface LocalIdeasState {
@@ -74,7 +74,7 @@ export const localIdeasSlice = createSlice({
             errorMessage: null,
         }))
 
-        builder.addCase(localIdeaUpdateThunk.rejected, (state, action) => ({
+        builder.addCase(localIdeaSynchronizationThunk.rejected, (state, action) => ({
             ...state,
             status: 'error',
             errorMessage: action.error.message || null,

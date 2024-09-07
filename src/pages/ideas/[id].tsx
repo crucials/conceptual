@@ -1,13 +1,13 @@
 import { useEffect } from 'react'
 import { notFound } from 'next/navigation'
 import { useRouter } from 'next/router'
-import { Container, Skeleton, Text, Title, Transition } from '@mantine/core'
+import { Container, Skeleton, Text, Transition } from '@mantine/core'
 import { useAppDispatch, useAppSelector } from '@/stores/hooks'
-import { localIdeasReducer, selectLocalIdeas, updateIdea } from '@/stores/local-ideas'
+import { selectLocalIdeas, updateIdea } from '@/stores/local-ideas'
 import { UnexpectedError } from '@/errors/unexpected-error'
 import type { Idea } from '@/types/idea'
 import { useDebouncedCallback } from '@mantine/hooks'
-import { localIdeaUpdateThunk } from '@/stores/local-ideas/thunks'
+import { localIdeaSynchronizationThunk } from '@/stores/local-ideas/thunks'
 
 export default function Idea() {
     const router = useRouter()
@@ -17,7 +17,7 @@ export default function Idea() {
 
     const handleDatabaseSynchronization = useDebouncedCallback(async () => {
         if (idea) {
-            await dispatch(localIdeaUpdateThunk({
+            await dispatch(localIdeaSynchronizationThunk({
                 ideaToUpdateId: idea.id,
                 newIdeaValue: idea,
             }))

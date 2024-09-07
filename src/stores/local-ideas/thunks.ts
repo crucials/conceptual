@@ -34,11 +34,11 @@ export const localIdeasCreationThunk = createAsyncThunk<
     return await localIdeasDatabase.getIdeaById(newRecordId)
 })
 
-export const localIdeaUpdateThunk = createAsyncThunk<
+export const localIdeaSynchronizationThunk = createAsyncThunk<
     void,
     { ideaToUpdateId: number, newIdeaValue: Idea },
     { state: RootState }
->('localIdeas/create', async ({ ideaToUpdateId, newIdeaValue }) => {
+>('localIdeas/synchronize', async ({ ideaToUpdateId, newIdeaValue }) => {
     await localIdeasDatabase.open()
     await localIdeasDatabase.updateIdea(ideaToUpdateId, newIdeaValue)
 })
