@@ -9,9 +9,10 @@ import {
     ScrollArea,
     Transition,
 } from '@mantine/core'
-import { Icon3dCubeSphere, IconExclamationCircle } from '@tabler/icons-react'
+import { IconExclamationCircle } from '@tabler/icons-react'
 import { useAppSelector } from '@/stores/hooks'
 import { selectPrivateIdeas, selectPrivateIdeasItems } from '@/stores/private-ideas'
+import IdeasList from '@/components/sidebar/ideas-list'
 
 export default function Sidebar() {
     const ideas = useAppSelector(selectPrivateIdeas)
@@ -19,30 +20,7 @@ export default function Sidebar() {
     return (
         <AppShell.Navbar p="lg">
             <Transition mounted={ideas.status === 'loaded'} transition="scale">
-                {styles => (
-                    <ScrollArea
-                        scrollbarSize={10}
-                        offsetScrollbars
-                        scrollbars="y"
-                        style={styles}
-                    >
-                        <Button mb="xl" mih={37} w="100%">
-                            Create
-                        </Button>
-
-                        {ideas.items.map(idea => (
-                            <div key={idea.id}>
-                                <NavLink
-                                    component={Link}
-                                    href={`/ideas/${idea.id}`}
-                                    label={idea.title}
-                                    leftSection={<Icon3dCubeSphere size={22} />}
-                                />
-                                <Divider my="xs" />
-                            </div>
-                        ))}
-                    </ScrollArea>
-                )}
+                {styles => <IdeasList ideasState={ideas} style={styles} />}
             </Transition>
 
             <Transition mounted={ideas.status === 'error'} transition="scale">

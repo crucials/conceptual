@@ -34,5 +34,6 @@ export const privateIdeasCreationThunk = createAsyncThunk<
     const privateIdeasDatabase = new PrivateIdeasDatabase()
     await privateIdeasDatabase.open()
 
-    return await privateIdeasDatabase.addIdea(ideaData)
+    const newRecordId = await privateIdeasDatabase.addIdea(ideaData)
+    return await privateIdeasDatabase.getIdeaById(newRecordId)
 })

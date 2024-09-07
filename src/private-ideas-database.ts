@@ -18,7 +18,15 @@ export class PrivateIdeasDatabase {
 
         request.addEventListener('upgradeneeded', event => {
             this.database = (event.target as IDBOpenDBRequest).result
-            this.database.deleteObjectStore(this.IDEAS_OBJECT_STORE_NAME)
+
+            try {
+                this.database.deleteObjectStore(this.IDEAS_OBJECT_STORE_NAME)
+            } catch (error) {
+                console.log(
+                    'no object stores to delete, database has been just created',
+                )
+            }
+
             this.database.createObjectStore(this.IDEAS_OBJECT_STORE_NAME, {
                 keyPath: 'id',
                 autoIncrement: true,
@@ -38,7 +46,7 @@ export class PrivateIdeasDatabase {
     }
 
     /**
-     * get all ideas objects
+     * gets all ideas objects
      * @throws {DatabaseNotInitializedError} necessary method `open` has not been
      *  called, so the database is unavailable
      */
@@ -59,9 +67,31 @@ export class PrivateIdeasDatabase {
     }
 
     /**
+     * gets an idea record by its id
+     * @throws {DatabaseNotInitializedError} necessary method `open` has not been
+     *  called, so the database is unavailable
+     */
+    getIdeaById(id: number) {
+        if (!this.database) {
+            throw new DatabaseNotInitializedError()
+        }
+
+        const objectStore = this.database
+            .transaction(this.IDEAS_OBJECT_STORE_NAME)
+            .objectStore(this.IDEAS_OBJECT_STORE_NAME)
+
+        return new Promise<Idea>(resolve => {
+            objectStore.get(id).addEventListener('success', event => {
+                resolve((event.target as IDBRequest).result)
+            })
+        })
+    }
+
+    /**
      * creates new idea record
      * @throws {DatabaseNotInitializedError} necessary method `open` has not been
      *  called, so the database is unavailable
+     * @returns created idea id
      */
     addIdea(idea: IdeaWithoutId) {
         if (!this.database) {
@@ -72,7 +102,7 @@ export class PrivateIdeasDatabase {
             .transaction(this.IDEAS_OBJECT_STORE_NAME, 'readwrite')
             .objectStore(this.IDEAS_OBJECT_STORE_NAME)
 
-        return new Promise<Idea>(resolve => {
+        return new Promise<number>(resolve => {
             objectStore.add(idea).addEventListener('success', event => {
                 resolve((event.target as IDBRequest).result)
             })

@@ -1,16 +1,20 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { Idea } from '@/types/idea'
 import { RootState } from '@/stores'
-import { privateIdeasLoadingThunk } from '@/stores/private-ideas/thunks'
+import {
+    privateIdeasCreationThunk,
+    privateIdeasLoadingThunk,
+} from '@/stores/private-ideas/thunks'
 
 export interface PrivateIdeasState {
     status: 'initial' | 'loaded' | 'pending' | 'error'
-    errorMessage?: string
+    errorMessage: string | null
     items: Idea[]
 }
 
 const initialState: PrivateIdeasState = {
     status: 'initial',
+    errorMessage: null,
     items: [],
 }
 
@@ -34,6 +38,7 @@ export const privateIdeasSlice = createSlice({
         builder.addCase(privateIdeasLoadingThunk.fulfilled, (state, action) => {
             return {
                 status: 'loaded',
+                errorMessage: null,
                 items: state.items.concat(...action.payload),
             }
         })
@@ -41,7 +46,14 @@ export const privateIdeasSlice = createSlice({
         builder.addCase(privateIdeasLoadingThunk.rejected, (state, action) => ({
             ...state,
             status: 'error',
-            errorMessage: action.error.message,
+            errorMessage: action.error.message || null,
+        }))
+
+        builder.addCase(privateIdeasCreationThunk.fulfilled, (state, action) => ({
+            ...state,
+            items: state.items.concat(action.payload),
+            status: 'loaded',
+            errorMessage: null,
         }))
     },
 })
