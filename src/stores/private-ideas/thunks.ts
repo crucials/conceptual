@@ -4,6 +4,8 @@ import { RootState } from '@/stores'
 import { PrivateIdeasDatabase } from '@/private-ideas-database'
 import { Idea, IdeaWithoutId } from '@/types/idea'
 
+const privateIdeasDatabase = new PrivateIdeasDatabase()
+
 export const privateIdeasLoadingThunk = createAsyncThunk<
     Idea[],
     void,
@@ -11,7 +13,6 @@ export const privateIdeasLoadingThunk = createAsyncThunk<
 >(
     'privateIdeas/load',
     async () => {
-        const privateIdeasDatabase = new PrivateIdeasDatabase()
         await privateIdeasDatabase.open()
 
         await new Promise<void>(resolve => setTimeout(resolve, 200))
@@ -31,7 +32,6 @@ export const privateIdeasCreationThunk = createAsyncThunk<
     Omit<Idea, 'id'>,
     { state: RootState }
 >('privateIdeas/create', async (ideaData: IdeaWithoutId) => {
-    const privateIdeasDatabase = new PrivateIdeasDatabase()
     await privateIdeasDatabase.open()
 
     const newRecordId = await privateIdeasDatabase.addIdea(ideaData)
