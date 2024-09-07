@@ -13,9 +13,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
             <AppShell navbar={{ width: 300, breakpoint: '' }}>
                 <Sidebar />
 
-                <AppShell.Main>
-                    {children}
-                </AppShell.Main>
+                <AppShell.Main>{children}</AppShell.Main>
             </AppShell>
         </MantineProvider>
     )

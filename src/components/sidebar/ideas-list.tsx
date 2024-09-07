@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import Link from 'next/link'
+import { useRouter } from 'next/router'
 import { Button, CSSProperties, Divider, NavLink, ScrollArea } from '@mantine/core'
 import { Icon3dCubeSphere } from '@tabler/icons-react'
 import { PrivateIdeasState } from '@/stores/private-ideas'
@@ -13,6 +14,7 @@ export default function IdeasList({
     ideasState: PrivateIdeasState
     style?: CSSProperties
 }) {
+    const router = useRouter()
     const dispatch = useAppDispatch()
 
     const [loading, setLoading] = useState(false)
@@ -25,7 +27,10 @@ export default function IdeasList({
                 title: 'enter something here',
                 content: 'and here',
             }),
-        ).then(() => setLoading(false))
+        ).then(() => {
+            setLoading(false)
+            router.push(`/ideas/${ideasState.items.at(-1)?.id}`)
+        })
     }
 
     return (

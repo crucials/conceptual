@@ -108,4 +108,28 @@ export class PrivateIdeasDatabase {
             })
         })
     }
+
+    /**
+     * replaces idea record with a new value
+     * @throws {DatabaseNotInitializedError} necessary method `open` has not been
+     *  called, so the database is unavailable
+     * @returns replaced idea id
+     */
+    updateIdea(id: number, newValue: Idea) {
+        if (!this.database) {
+            throw new DatabaseNotInitializedError()
+        }
+
+        const objectStore = this.database
+            .transaction(this.IDEAS_OBJECT_STORE_NAME, 'readwrite')
+            .objectStore(this.IDEAS_OBJECT_STORE_NAME)
+
+        return new Promise<number>(resolve => {
+            objectStore.put(newValue).addEventListener('success', event => {
+                console.log(event)
+                
+                resolve((event.target as IDBRequest).result)
+            })
+        })
+    }
 }

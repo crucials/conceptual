@@ -4,6 +4,7 @@ import { RootState } from '@/stores'
 import {
     privateIdeasCreationThunk,
     privateIdeasLoadingThunk,
+    privateIdeaUpdateThunk,
 } from '@/stores/private-ideas/thunks'
 
 export interface PrivateIdeasState {
@@ -28,6 +29,23 @@ export const privateIdeasSlice = createSlice({
                 items: state.items.concat(...action.payload),
             }
         },
+
+        updateIdea(state, action: PayloadAction<{ ideaToUpdateId: number, newIdeaData: Partial<Idea> }>) {
+            const foundIdeaIndex = state.items.findIndex(idea => idea.id === action.payload.ideaToUpdateId)
+
+            if (foundIdeaIndex !== -1) {
+                const newItems = [...state.items]
+                newItems[foundIdeaIndex] = {
+                    ...newItems[foundIdeaIndex],
+                    ...action.payload.newIdeaData
+                }
+
+                return {
+                    ...state,
+                    items: newItems
+                }
+            }
+        }
     },
     extraReducers: builder => {
         builder.addCase(privateIdeasLoadingThunk.pending, state => ({
@@ -55,10 +73,16 @@ export const privateIdeasSlice = createSlice({
             status: 'loaded',
             errorMessage: null,
         }))
+
+        builder.addCase(privateIdeaUpdateThunk.rejected, (state, action) => ({
+            ...state,
+            status: 'error',
+            errorMessage: action.error.message || null,
+        }))
     },
 })
 
-export const { addIdeas } = privateIdeasSlice.actions
+export const { addIdeas, updateIdea } = privateIdeasSlice.actions
 
 export const privateIdeasReducer = privateIdeasSlice.reducer
 

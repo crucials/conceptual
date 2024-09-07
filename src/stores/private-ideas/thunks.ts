@@ -14,9 +14,6 @@ export const privateIdeasLoadingThunk = createAsyncThunk<
     'privateIdeas/load',
     async () => {
         await privateIdeasDatabase.open()
-
-        await new Promise<void>(resolve => setTimeout(resolve, 200))
-
         return await privateIdeasDatabase.getIdeas()
     },
     {
@@ -33,7 +30,15 @@ export const privateIdeasCreationThunk = createAsyncThunk<
     { state: RootState }
 >('privateIdeas/create', async (ideaData: IdeaWithoutId) => {
     await privateIdeasDatabase.open()
-
     const newRecordId = await privateIdeasDatabase.addIdea(ideaData)
     return await privateIdeasDatabase.getIdeaById(newRecordId)
+})
+
+export const privateIdeaUpdateThunk = createAsyncThunk<
+    void,
+    { ideaToUpdateId: number, newIdeaValue: Idea },
+    { state: RootState }
+>('privateIdeas/create', async ({ ideaToUpdateId, newIdeaValue }) => {
+    await privateIdeasDatabase.open()
+    await privateIdeasDatabase.updateIdea(ideaToUpdateId, newIdeaValue)
 })
