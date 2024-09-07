@@ -9,8 +9,6 @@ export default function HomePage() {
     const dispatch = useAppDispatch()
 
     useEffect(() => {
-        console.log(privateIdeasStatus)
-
         if (privateIdeasStatus === 'initial') {
             dispatch(privateIdeasLoadingThunk())
         }

@@ -11,7 +11,6 @@ export const privateIdeasLoadingThunk = createAsyncThunk<
     'privateIdeas/load',
     async () => {
         await new Promise<void>(resolve => setTimeout(resolve, 1000))
-        console.log('load')
 
         return [
             {
