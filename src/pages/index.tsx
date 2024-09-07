@@ -1,5 +1,3 @@
-import styles from '@/styles/home-page.module.css'
-
 import { useEffect } from 'react'
 import { Container, Text, Title } from '@mantine/core'
 import { useAppDispatch, useAppSelector } from '@/stores/hooks'
@@ -12,7 +10,7 @@ export default function HomePage() {
 
     useEffect(() => {
         console.log(privateIdeasStatus)
-        
+
         if (privateIdeasStatus === 'initial') {
             dispatch(privateIdeasLoadingThunk())
         }

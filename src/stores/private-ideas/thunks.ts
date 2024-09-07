@@ -1,7 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit'
-import { useAppSelector } from '@/stores/hooks'
 import { selectPrivateIdeasStatus } from '@/stores/private-ideas'
-import { AppThunk, RootState } from '@/stores'
+import { RootState } from '@/stores'
 import { Idea } from '@/types/idea'
 
 export const privateIdeasLoadingThunk = createAsyncThunk<
@@ -13,7 +12,7 @@ export const privateIdeasLoadingThunk = createAsyncThunk<
     async () => {
         await new Promise<void>(resolve => setTimeout(resolve, 1000))
         console.log('load')
-        
+
         return [
             {
                 id: 1,
@@ -26,6 +25,6 @@ export const privateIdeasLoadingThunk = createAsyncThunk<
         condition(arg, thunkApi) {
             const status = selectPrivateIdeasStatus(thunkApi.getState())
             return status === 'initial'
-        }
-    }
+        },
+    },
 )
