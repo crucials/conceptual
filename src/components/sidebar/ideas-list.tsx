@@ -29,7 +29,7 @@ export default function IdeasList({
                 title: 'enter something here',
                 content: 'and here',
             }),
-        ).then((action) => {
+        ).then(action => {
             setLoading(false)
             router.push(`/ideas/${(action.payload as Idea).id}`)
         })

@@ -30,22 +30,30 @@ export const localIdeasSlice = createSlice({
             }
         },
 
-        updateIdea(state, action: PayloadAction<{ ideaToUpdateId: number, newIdeaData: Partial<Idea> }>) {
-            const foundIdeaIndex = state.items.findIndex(idea => idea.id === action.payload.ideaToUpdateId)
+        updateIdea(
+            state,
+            action: PayloadAction<{
+                ideaToUpdateId: number
+                newIdeaData: Partial<Idea>
+            }>,
+        ) {
+            const foundIdeaIndex = state.items.findIndex(
+                idea => idea.id === action.payload.ideaToUpdateId,
+            )
 
             if (foundIdeaIndex !== -1) {
                 const newItems = [...state.items]
                 newItems[foundIdeaIndex] = {
                     ...newItems[foundIdeaIndex],
-                    ...action.payload.newIdeaData
+                    ...action.payload.newIdeaData,
                 }
 
                 return {
                     ...state,
-                    items: newItems
+                    items: newItems,
                 }
             }
-        }
+        },
     },
     extraReducers: builder => {
         builder.addCase(localIdeasLoadingThunk.pending, state => ({
@@ -88,5 +96,4 @@ export const localIdeasReducer = localIdeasSlice.reducer
 
 export const selectLocalIdeas = (state: RootState) => state.localIdeas
 export const selectLocalIdeasItems = (state: RootState) => state.localIdeas.items
-export const selectIdeasLoadingStatus = (state: RootState) =>
-    state.localIdeas.status
+export const selectIdeasLoadingStatus = (state: RootState) => state.localIdeas.status

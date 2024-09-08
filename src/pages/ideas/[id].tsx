@@ -1,16 +1,16 @@
-import styles from '@/styles/idea-page.module.css'
-
 import { useEffect } from 'react'
-import ContentEditable from 'react-contenteditable'
 import { notFound } from 'next/navigation'
 import { useRouter } from 'next/router'
-import { Container, Skeleton, Text, Title, Transition } from '@mantine/core'
+import { Container, Skeleton, Tabs, Title, Transition } from '@mantine/core'
+import { useDebouncedCallback } from '@mantine/hooks'
+import { IconEye, IconPencil } from '@tabler/icons-react'
+import { UnexpectedError } from '@/errors/unexpected-error'
 import { useAppDispatch, useAppSelector } from '@/stores/hooks'
 import { selectLocalIdeas, updateIdea } from '@/stores/local-ideas'
-import { UnexpectedError } from '@/errors/unexpected-error'
-import type { Idea } from '@/types/idea'
-import { useDebouncedCallback } from '@mantine/hooks'
 import { localIdeaSynchronizationThunk } from '@/stores/local-ideas/thunks'
+import type { Idea } from '@/types/idea'
+import IdeaPreview from '@/components/idea-page/preview'
+import IdeaEditor from '@/components/idea-page/editor'
 
 export default function Idea() {
     const router = useRouter()
@@ -20,10 +20,12 @@ export default function Idea() {
 
     const handleDatabaseSynchronization = useDebouncedCallback(async () => {
         if (idea) {
-            await dispatch(localIdeaSynchronizationThunk({
-                ideaToUpdateId: idea.id,
-                newIdeaValue: idea,
-            }))
+            await dispatch(
+                localIdeaSynchronizationThunk({
+                    ideaToUpdateId: idea.id,
+                    newIdeaValue: idea,
+                }),
+            )
             console.log('synced with idb')
         }
     }, 500)
@@ -42,10 +44,12 @@ export default function Idea() {
 
     function handleIdeaUpdate(newIdeaData: Partial<Idea>) {
         if (idea) {
-            dispatch(updateIdea({
-                ideaToUpdateId: idea.id,
-                newIdeaData
-            }))
+            dispatch(
+                updateIdea({
+                    ideaToUpdateId: idea.id,
+                    newIdeaData,
+                }),
+            )
 
             handleDatabaseSynchronization()
         }
@@ -59,20 +63,34 @@ export default function Idea() {
             >
                 {transitionStyles => (
                     <div style={transitionStyles}>
-                        <Title order={1}>
-                            <ContentEditable
-                                tagName="span"
-                                className={styles['editable-title-content']}
-                                onChange={event =>
-                                    handleIdeaUpdate({
-                                        title: event.target.value,
-                                    })
-                                }
-                                html={idea?.title || ''}
-                            />
-                        </Title>
+                        <Tabs defaultValue="preview" variant="outline">
+                            <Tabs.List mb="lg">
+                                <Tabs.Tab
+                                    value="preview"
+                                    leftSection={<IconEye size={22} />}
+                                >
+                                    preview
+                                </Tabs.Tab>
 
-                        <Text>{idea?.content}</Text>
+                                <Tabs.Tab
+                                    value="edit"
+                                    leftSection={<IconPencil size={22} />}
+                                >
+                                    edit
+                                </Tabs.Tab>
+                            </Tabs.List>
+
+                            <Tabs.Panel value="preview">
+                                <IdeaPreview idea={idea} />
+                            </Tabs.Panel>
+
+                            <Tabs.Panel value="edit">
+                                <IdeaEditor
+                                    idea={idea}
+                                    onIdeaUpdate={handleIdeaUpdate}
+                                />
+                            </Tabs.Panel>
+                        </Tabs>
                     </div>
                 )}
             </Transition>

@@ -1,0 +1,8 @@
+.title-field input {
+    font-weight: bold;
+    font-size: 2rem;
+}
+
+.title-field input::placeholder {
+    font-weight: normal;
+}

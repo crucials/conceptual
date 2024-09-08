@@ -1,5 +1,6 @@
 import '@/styles/normalize.css'
 import '@mantine/core/styles.css'
+import '@mantine/tiptap/styles.css'
 
 import type { AppProps } from 'next/app'
 import { Provider } from 'react-redux'

@@ -127,7 +127,7 @@ export class LocalIdeasDatabase {
         return new Promise<number>(resolve => {
             objectStore.put(newValue).addEventListener('success', event => {
                 console.log(event)
-                
+
                 resolve((event.target as IDBRequest).result)
             })
         })

@@ -19,7 +19,10 @@ export default function Sidebar() {
 
     return (
         <AppShell.Navbar p="lg">
-            <Transition mounted={ideas.status === 'loaded' && Boolean(ideas.items)} transition="scale">
+            <Transition
+                mounted={ideas.status === 'loaded' && Boolean(ideas.items)}
+                transition="scale"
+            >
                 {styles => <IdeasList ideasState={ideas} style={styles} />}
             </Transition>
 
