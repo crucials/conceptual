@@ -1,3 +1,7 @@
+.borderless-idea-content {
+    border: none;
+}
+
 .title-field input {
     font-weight: bold;
     font-size: 2rem;

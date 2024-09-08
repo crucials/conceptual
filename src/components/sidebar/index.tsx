@@ -1,9 +1,4 @@
-import {
-    Alert,
-    AppShell,
-    Loader,
-    Transition,
-} from '@mantine/core'
+import { Alert, AppShell, Loader, Transition } from '@mantine/core'
 import { IconExclamationCircle } from '@tabler/icons-react'
 import { useAppSelector } from '@/stores/hooks'
 import { selectLocalIdeas } from '@/stores/local-ideas'

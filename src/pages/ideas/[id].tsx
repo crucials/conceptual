@@ -1,3 +1,5 @@
+import styles from '@/styles/idea-page.module.css'
+
 import { useEffect } from 'react'
 import { notFound } from 'next/navigation'
 import { useRouter } from 'next/router'
@@ -81,13 +83,14 @@ export default function Idea() {
                             </Tabs.List>
 
                             <Tabs.Panel value="preview">
-                                <IdeaPreview idea={idea} />
+                                <IdeaPreview idea={idea} styles={styles} />
                             </Tabs.Panel>
 
                             <Tabs.Panel value="edit">
                                 <IdeaEditor
                                     idea={idea}
                                     onIdeaUpdate={handleIdeaUpdate}
+                                    styles={styles}
                                 />
                             </Tabs.Panel>
                         </Tabs>
