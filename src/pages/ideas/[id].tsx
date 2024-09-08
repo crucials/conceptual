@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import { notFound } from 'next/navigation'
 import { useRouter } from 'next/router'
-import { Container, Skeleton, Tabs, Title, Transition } from '@mantine/core'
+import { Container, Skeleton, Tabs, Transition } from '@mantine/core'
 import { useDebouncedCallback } from '@mantine/hooks'
 import { IconEye, IconPencil } from '@tabler/icons-react'
 import { UnexpectedError } from '@/errors/unexpected-error'
@@ -40,7 +40,7 @@ export default function Idea() {
         } else if (localIdeas.status === 'error') {
             throw new UnexpectedError(localIdeas.errorMessage || undefined)
         }
-    }, [localIdeas.status])
+    }, [localIdeas, idea])
 
     function handleIdeaUpdate(newIdeaData: Partial<Idea>) {
         if (idea) {

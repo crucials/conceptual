@@ -34,6 +34,7 @@
         "@types/react-dom": "^18",
         "eslint": "^8",
         "eslint-config-next": "14.2.8",
+        "eslint-plugin-react-redux": "^4.2.0",
         "postcss": "^8.4.45",
         "postcss-preset-mantine": "^1.17.0",
         "postcss-simple-vars": "^7.0.1",

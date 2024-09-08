@@ -1,3 +1,12 @@
 {
-    "extends": ["next/core-web-vitals", "next/typescript"]
+    "plugins": ["react-redux"],
+    "extends": [
+        "next/core-web-vitals",
+        "next/typescript",
+        "plugin:react-redux/recommended"
+    ],
+    "rules": {
+        "react-redux/connect-prefer-named-arguments": 2,
+        "react-redux/mapStateToProps-prefer-selectors": 2
+    }
 }

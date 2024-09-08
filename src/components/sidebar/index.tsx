@@ -1,12 +1,7 @@
-import Link from 'next/link'
 import {
     Alert,
     AppShell,
-    Button,
-    Divider,
     Loader,
-    NavLink,
-    ScrollArea,
     Transition,
 } from '@mantine/core'
 import { IconExclamationCircle } from '@tabler/icons-react'
