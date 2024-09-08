@@ -1,11 +1,11 @@
 import { useEffect } from 'react'
-import { Card, Divider, Paper, Title } from '@mantine/core'
+import { Title } from '@mantine/core'
 import { RichTextEditor } from '@mantine/tiptap'
 import { useEditor } from '@tiptap/react'
 import { Idea } from '@/types/idea'
 import tiptapExtensions from '@/tiptap-extensions'
 
-export default function IdeaPreview({ idea, styles }: { idea?: Idea, styles: Record<string, string> }) {
+export default function IdeaPreview({ idea }: { idea?: Idea }) {
     const editor = useEditor({
         immediatelyRender: false,
         editable: false,
@@ -25,11 +25,9 @@ export default function IdeaPreview({ idea, styles }: { idea?: Idea, styles: Rec
                 {idea.title}
             </Title>
 
-            <Paper bg="#00000010" p="md" radius={8}>
-                <RichTextEditor editor={editor} className={styles['borderless-idea-content']}>
-                    <RichTextEditor.Content bg="#FFFFFF" />
-                </RichTextEditor>
-            </Paper>
+            <RichTextEditor editor={editor}>
+                <RichTextEditor.Content bg="#FFFFFF" />
+            </RichTextEditor>
         </>
     ) : (
         <></>

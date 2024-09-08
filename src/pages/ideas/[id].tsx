@@ -83,7 +83,7 @@ export default function Idea() {
                             </Tabs.List>
 
                             <Tabs.Panel value="preview">
-                                <IdeaPreview idea={idea} styles={styles} />
+                                <IdeaPreview idea={idea} />
                             </Tabs.Panel>
 
                             <Tabs.Panel value="edit">
