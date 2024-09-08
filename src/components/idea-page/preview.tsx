@@ -10,12 +10,12 @@ export default function IdeaPreview({ idea }: { idea?: Idea }) {
         immediatelyRender: false,
         editable: false,
         extensions: tiptapExtensions,
-        content: idea?.content,
+        content: idea?.textContent,
     })
 
     useEffect(() => {
-        if (idea?.content !== editor?.getHTML()) {
-            editor?.commands.setContent(idea?.content || '')
+        if (idea?.textContent !== editor?.getHTML()) {
+            editor?.commands.setContent(idea?.textContent || '')
         }
     }, [idea])
 

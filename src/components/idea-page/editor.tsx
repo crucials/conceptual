@@ -15,22 +15,22 @@ export default function IdeaEditor({ idea, onIdeaUpdate, styles }: IdeaEditorPro
     const contentEditor = useEditor({
         immediatelyRender: false,
         extensions: tiptapExtensions,
-        content: idea?.content,
+        content: idea?.textContent,
         onUpdate(props) {
             if (idea) {
                 onIdeaUpdate({
                     ...idea,
-                    content: props.editor.getHTML(),
+                    textContent: props.editor.getHTML(),
                 })
             }
         },
     })
 
     useEffect(() => {
-        if (idea?.content !== contentEditor?.getHTML()) {
-            contentEditor?.commands.setContent(idea?.content || '')
+        if (idea?.textContent !== contentEditor?.getHTML()) {
+            contentEditor?.commands.setContent(idea?.textContent || '')
         }
-    }, [idea?.content])
+    }, [idea?.textContent])
 
     return idea ? (
         <>

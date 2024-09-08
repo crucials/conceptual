@@ -26,7 +26,7 @@ export default function IdeasList({
         dispatch(
             localIdeasCreationThunk({
                 title: 'enter something here',
-                content: 'and here',
+                textContent: 'and here',
             }),
         ).then(action => {
             setLoading(false)
