@@ -11,7 +11,7 @@ import {
 } from '@mantine/core'
 import { IconExclamationCircle } from '@tabler/icons-react'
 import { useAppSelector } from '@/stores/hooks'
-import { selectLocalIdeas, selectLocalIdeasItems } from '@/stores/local-ideas'
+import { selectLocalIdeas } from '@/stores/local-ideas'
 import IdeasList from '@/components/sidebar/ideas-list'
 
 export default function Sidebar() {
