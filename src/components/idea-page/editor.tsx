@@ -35,7 +35,9 @@ export default function IdeaEditor({ idea, onIdeaUpdate }: IdeaEditorProps) {
         <>
             <TextInput
                 value={idea.title}
-                onChange={event => onIdeaUpdate({ ...idea, title: event.target.value })}
+                onChange={event =>
+                    onIdeaUpdate({ ...idea, title: event.target.value })
+                }
                 placeholder="title"
                 size="xl"
                 mb="lg"
