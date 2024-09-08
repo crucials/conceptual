@@ -6,6 +6,8 @@ import { Icon3dCubeSphere } from '@tabler/icons-react'
 import { LocalIdeasState } from '@/stores/local-ideas'
 import { useAppDispatch } from '@/stores/hooks'
 import { localIdeasCreationThunk } from '@/stores/local-ideas/thunks'
+import { PayloadAction, UnknownAction } from '@reduxjs/toolkit'
+import { Idea } from '@/types/idea'
 
 export default function IdeasList({
     ideasState,
@@ -27,9 +29,9 @@ export default function IdeasList({
                 title: 'enter something here',
                 content: 'and here',
             }),
-        ).then(() => {
+        ).then((action) => {
             setLoading(false)
-            router.push(`/ideas/${ideasState.items.at(-1)?.id}`)
+            router.push(`/ideas/${(action.payload as Idea).id}`)
         })
     }
 

@@ -1,7 +1,10 @@
+import styles from '@/styles/idea-page.module.css'
+
 import { useEffect } from 'react'
+import ContentEditable from 'react-contenteditable'
 import { notFound } from 'next/navigation'
 import { useRouter } from 'next/router'
-import { Container, Skeleton, Text, Transition } from '@mantine/core'
+import { Container, Skeleton, Text, Title, Transition } from '@mantine/core'
 import { useAppDispatch, useAppSelector } from '@/stores/hooks'
 import { selectLocalIdeas, updateIdea } from '@/stores/local-ideas'
 import { UnexpectedError } from '@/errors/unexpected-error'
@@ -54,16 +57,20 @@ export default function Idea() {
                 mounted={localIdeas.status === 'loaded' && idea !== undefined}
                 transition="fade"
             >
-                {styles => (
-                    <div style={styles}>
-                        <input
-                            value={idea?.title}
-                            onChange={event =>
-                                handleIdeaUpdate({
-                                    title: (event.target as HTMLInputElement).value,
-                                })
-                            }
-                        />
+                {transitionStyles => (
+                    <div style={transitionStyles}>
+                        <Title order={1}>
+                            <ContentEditable
+                                tagName="span"
+                                className={styles['editable-title-content']}
+                                onChange={event =>
+                                    handleIdeaUpdate({
+                                        title: event.target.value,
+                                    })
+                                }
+                                html={idea?.title || ''}
+                            />
+                        </Title>
 
                         <Text>{idea?.content}</Text>
                     </div>
