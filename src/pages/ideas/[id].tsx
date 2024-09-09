@@ -1,12 +1,12 @@
 import styles from '@/styles/idea-page.module.css'
 
-import { useEffect, useState } from 'react'
-import { notFound } from 'next/navigation'
+import { useMemo, useState } from 'react'
 import { useRouter } from 'next/router'
+import ErrorPage from 'next/error'
 import { Container, Skeleton, Tabs, Transition } from '@mantine/core'
 import { useDebouncedCallback } from '@mantine/hooks'
 import { IconEye, IconPencil } from '@tabler/icons-react'
-import { UnexpectedError } from '@/errors/unexpected-error'
+import { UnexpectedError, AppError } from '@/errors'
 import { useAppDispatch, useAppSelector } from '@/stores/hooks'
 import { selectLocalIdeas, updateIdea } from '@/stores/local-ideas'
 import { localIdeaDeletionThunk, localIdeaSynchronizationThunk } from '@/stores/local-ideas/thunks'
@@ -35,13 +35,11 @@ export default function Idea() {
     const idea = localIdeas.items.find(idea => `${idea.id}` === router.query.id)
     const [ideaDeleted, setIdeaDeleted] = useState(false)
 
-    useEffect(() => {
-        if (localIdeas.status === 'loaded') {
-            if (!idea && !ideaDeleted) {
-                notFound()
-            }
+    const error = useMemo(() => {
+        if (localIdeas.status === 'loaded' && !idea && !ideaDeleted) {
+            return new AppError('request idea not found', 404)
         } else if (localIdeas.status === 'error') {
-            throw new UnexpectedError(localIdeas.errorMessage || undefined)
+            return new UnexpectedError(localIdeas.errorMessage || undefined)
         }
     }, [localIdeas, idea, ideaDeleted])
 
@@ -64,6 +62,10 @@ export default function Idea() {
             await dispatch(localIdeaDeletionThunk({ ideaToDeleteId: idea.id }))
             router.push('/')
         }
+    }
+
+    if (error) {
+        return <ErrorPage statusCode={error.statusCode} title={error.message} />
     }
 
     return (
