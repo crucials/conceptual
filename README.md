@@ -1,3 +1,5 @@
+![fdsfs](./public/favicon.ico)
+
 # conceptual - save ideas you randomly came up with in nice UI
 
 app that lets you keep your ideas locally in one place described with convenient rich text editor
