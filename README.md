@@ -1,4 +1,4 @@
-![fdsfs](./public/favicon.ico)
+![abstract 3d cube, logo of the app](./public/favicon.ico)
 
 # conceptual - save ideas you randomly came up with in nice UI
 
