@@ -1,7 +1,7 @@
 import { BubbleMenu, useEditor } from '@tiptap/react'
 import { RichTextEditor } from '@mantine/tiptap'
 import { Button, Divider, TextInput } from '@mantine/core'
-import tiptapExtensions from '@/tiptap-extensions'
+import { tiptapExtensions } from '@/tiptap-extensions'
 import { Idea } from '@/types/idea'
 import { useEffect } from 'react'
 import { IconTrash } from '@tabler/icons-react'
@@ -32,7 +32,7 @@ export default function IdeaEditor({ idea, onIdeaUpdate, onIdeaDeletion, styles 
         if (idea?.textContent !== contentEditor?.getHTML()) {
             contentEditor?.commands.setContent(idea?.textContent || '')
         }
-    }, [idea?.textContent])
+    }, [idea?.textContent, contentEditor])
 
     return idea ? (
         <>

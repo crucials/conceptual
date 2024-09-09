@@ -9,7 +9,7 @@ import TaskList from '@tiptap/extension-task-list'
 import Image from '@tiptap/extension-image'
 import { getTaskListExtension } from '@mantine/tiptap'
 
-export default [
+export const tiptapExtensions = [
     StarterKit,
     Link,
     Underline,

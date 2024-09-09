@@ -3,7 +3,7 @@ import { Title } from '@mantine/core'
 import { RichTextEditor } from '@mantine/tiptap'
 import { useEditor } from '@tiptap/react'
 import { Idea } from '@/types/idea'
-import tiptapExtensions from '@/tiptap-extensions'
+import { tiptapExtensions } from '@/tiptap-extensions'
 
 export default function IdeaPreview({ idea }: { idea?: Idea }) {
     const editor = useEditor({
@@ -17,7 +17,7 @@ export default function IdeaPreview({ idea }: { idea?: Idea }) {
         if (idea?.textContent !== editor?.getHTML()) {
             editor?.commands.setContent(idea?.textContent || '')
         }
-    }, [idea])
+    }, [idea, editor])
 
     return idea ? (
         <>

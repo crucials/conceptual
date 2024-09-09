@@ -149,7 +149,7 @@ export class LocalIdeasDatabase {
             .objectStore(this.IDEAS_OBJECT_STORE_NAME)
 
         return new Promise<number>(resolve => {
-            objectStore.delete(id).addEventListener('success', event => {
+            objectStore.delete(id).addEventListener('success', () => {
                 resolve(id)
             })
         })
