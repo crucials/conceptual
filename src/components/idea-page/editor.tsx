@@ -1,17 +1,19 @@
 import { BubbleMenu, useEditor } from '@tiptap/react'
 import { RichTextEditor } from '@mantine/tiptap'
-import { TextInput } from '@mantine/core'
+import { Button, Divider, TextInput } from '@mantine/core'
 import tiptapExtensions from '@/tiptap-extensions'
 import { Idea } from '@/types/idea'
 import { useEffect } from 'react'
+import { IconTrash } from '@tabler/icons-react'
 
 interface IdeaEditorProps {
     idea?: Idea
     styles: Record<string, string>
     onIdeaUpdate: (newIdeaValue: Idea) => void
+    onIdeaDeletion: () => void
 }
 
-export default function IdeaEditor({ idea, onIdeaUpdate, styles }: IdeaEditorProps) {
+export default function IdeaEditor({ idea, onIdeaUpdate, onIdeaDeletion, styles }: IdeaEditorProps) {
     const contentEditor = useEditor({
         immediatelyRender: false,
         extensions: tiptapExtensions,
@@ -45,7 +47,7 @@ export default function IdeaEditor({ idea, onIdeaUpdate, styles }: IdeaEditorPro
                 className={styles['title-field']}
             />
 
-            <RichTextEditor editor={contentEditor}>
+            <RichTextEditor editor={contentEditor} mb="xl">
                 <RichTextEditor.Toolbar sticky stickyOffset={60}>
                     <RichTextEditor.ControlsGroup>
                         <RichTextEditor.Italic />
@@ -99,6 +101,12 @@ export default function IdeaEditor({ idea, onIdeaUpdate, styles }: IdeaEditorPro
 
                 <RichTextEditor.Content classNames={{ root: '123' }} />
             </RichTextEditor>
+
+            <Divider mb="xl" />
+
+            <Button color="red" leftSection={<IconTrash />} onClick={onIdeaDeletion}>
+                delete idea
+            </Button>
         </>
     ) : (
         <></>

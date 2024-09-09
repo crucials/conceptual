@@ -42,3 +42,12 @@ export const localIdeaSynchronizationThunk = createAsyncThunk<
     await localIdeasDatabase.open()
     await localIdeasDatabase.updateIdea(ideaToUpdateId, newIdeaValue)
 })
+
+export const localIdeaDeletionThunk = createAsyncThunk<
+    number,
+    { ideaToDeleteId: number },
+    { state: RootState }
+>('localIdeas/delete', async ({ ideaToDeleteId }) => {
+    await localIdeasDatabase.open()
+    return await localIdeasDatabase.deleteIdea(ideaToDeleteId)
+})

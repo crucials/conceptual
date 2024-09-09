@@ -132,4 +132,26 @@ export class LocalIdeasDatabase {
             })
         })
     }
+
+    /**
+     * replaces idea record with a new value
+     * @throws {DatabaseNotInitializedError} necessary method `open` has not been
+     *  called, so the database is unavailable
+     * @returns deleted idea id
+     */
+    deleteIdea(id: number) {
+        if (!this.database) {
+            throw new DatabaseNotInitializedError()
+        }
+
+        const objectStore = this.database
+            .transaction(this.IDEAS_OBJECT_STORE_NAME, 'readwrite')
+            .objectStore(this.IDEAS_OBJECT_STORE_NAME)
+
+        return new Promise<number>(resolve => {
+            objectStore.delete(id).addEventListener('success', event => {
+                resolve(id)
+            })
+        })
+    }
 }

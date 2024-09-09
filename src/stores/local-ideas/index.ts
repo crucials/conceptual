@@ -2,6 +2,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { Idea } from '@/types/idea'
 import { RootState } from '@/stores'
 import {
+    localIdeaDeletionThunk,
     localIdeasCreationThunk,
     localIdeasLoadingThunk,
     localIdeaSynchronizationThunk,
@@ -86,6 +87,11 @@ export const localIdeasSlice = createSlice({
             ...state,
             status: 'error',
             errorMessage: action.error.message || null,
+        }))
+
+        builder.addCase(localIdeaDeletionThunk.fulfilled, (state, action) => ({
+            ...state,
+            items: state.items.filter(idea => idea.id !== action.payload)
         }))
     },
 })

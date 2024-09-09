@@ -1,15 +1,15 @@
 import styles from '@/styles/idea-page.module.css'
 
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { notFound } from 'next/navigation'
 import { useRouter } from 'next/router'
-import { Container, Skeleton, Tabs, Transition } from '@mantine/core'
+import { Button, Container, Skeleton, Tabs, Transition } from '@mantine/core'
 import { useDebouncedCallback } from '@mantine/hooks'
-import { IconEye, IconPencil } from '@tabler/icons-react'
+import { IconEye, IconPencil, IconTrash } from '@tabler/icons-react'
 import { UnexpectedError } from '@/errors/unexpected-error'
 import { useAppDispatch, useAppSelector } from '@/stores/hooks'
 import { selectLocalIdeas, updateIdea } from '@/stores/local-ideas'
-import { localIdeaSynchronizationThunk } from '@/stores/local-ideas/thunks'
+import { localIdeaDeletionThunk, localIdeaSynchronizationThunk } from '@/stores/local-ideas/thunks'
 import type { Idea } from '@/types/idea'
 import IdeaPreview from '@/components/idea-page/preview'
 import IdeaEditor from '@/components/idea-page/editor'
@@ -33,16 +33,17 @@ export default function Idea() {
     }, 500)
 
     const idea = localIdeas.items.find(idea => `${idea.id}` === router.query.id)
+    const [ideaDeleted, setIdeaDeleted] = useState(false)
 
     useEffect(() => {
         if (localIdeas.status === 'loaded') {
-            if (!idea) {
+            if (!idea && !ideaDeleted) {
                 notFound()
             }
         } else if (localIdeas.status === 'error') {
             throw new UnexpectedError(localIdeas.errorMessage || undefined)
         }
-    }, [localIdeas, idea])
+    }, [localIdeas, idea, ideaDeleted])
 
     function handleIdeaUpdate(newIdeaData: Partial<Idea>) {
         if (idea) {
@@ -54,6 +55,14 @@ export default function Idea() {
             )
 
             handleDatabaseSynchronization()
+        }
+    }
+
+    async function handleIdeaDeletion() {
+        if (idea) {
+            setIdeaDeleted(true)
+            await dispatch(localIdeaDeletionThunk({ ideaToDeleteId: idea.id }))
+            router.push('/')
         }
     }
 
@@ -90,6 +99,7 @@ export default function Idea() {
                                 <IdeaEditor
                                     idea={idea}
                                     onIdeaUpdate={handleIdeaUpdate}
+                                    onIdeaDeletion={handleIdeaDeletion}
                                     styles={styles}
                                 />
                             </Tabs.Panel>
